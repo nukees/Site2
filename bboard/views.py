@@ -8,6 +8,20 @@ from django.template import loader
 
 from .models import Bb
 from .models import Rubric
+from django.views.generic.edit import CreateView
+from .forms import BbForm
+from django.urls import reverse_lazy
+
+
+class BbCreateView(CreateView):
+    template_name = 'bboard/create.html'
+    form_class = BbForm
+    success_url = reverse_lazy('index')
+
+    def get_context_data(self, **kwargs):
+        context = super().get_context_data(**kwargs)
+        context['rubric'] = Rubric.objects.all()
+        return context
 
 
 def index(request):
